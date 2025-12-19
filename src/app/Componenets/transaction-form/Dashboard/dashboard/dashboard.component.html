@@ -1,0 +1,128 @@
+<!-- File: src/app/Components/transaction-form/Dashboard/dashboard/dashboard.component.html -->
+
+<div class="container-fluid mt-3 pb-5">
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded mb-4 shadow">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        🛡️ SentinelStream
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/home">🏠 Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="/dashboard">📊 Dashboard</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Title -->
+  <h1 class="text-center mb-5 display-4 fw-bold text-primary">📊 Live Fraud Detection Dashboard</h1>
+
+  <!-- Stats Cards -->
+  <div class="row mb-5 g-4 justify-content-center">
+    <div class="col-md-4 col-sm-12">
+      <div class="card text-white bg-success shadow-lg h-100 border-0">
+        <div class="card-body text-center p-4">
+          <h2 class="display-5 fw-bold">{{ dashboardStats.safe }}</h2>
+          <p class="fs-4 mb-0">✅ Safe Transactions</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="card text-white bg-danger shadow-lg h-100 border-0">
+        <div class="card-body text-center p-4">
+          <h2 class="display-5 fw-bold">{{ dashboardStats.fraud }}</h2>
+          <p class="fs-4 mb-0">🚨 Fraud Detected</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="card text-white bg-warning shadow-lg h-100 border-0">
+        <div class="card-body text-center p-4">
+          <h2 class="display-5 fw-bold text-dark">{{ dashboardStats.pending }}</h2>
+          <p class="fs-4 mb-0 text-dark">⏳ Pending</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Table -->
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+      <h5 class="mb-0 fw-bold">🕒 Recent Transactions (Last 10)</h5>
+      <span class="badge bg-light text-dark fs-6 px-3 py-2">{{ transactions.length }} Total Processed</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>User ID</th>
+            <th>Amount</th>
+            <th>Currency</th>
+            <th>Merchant</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let txn of recentTransactions"
+              [ngClass]="{
+                'table-success': txn.status === 'APPROVED',
+                'table-danger': txn.status === 'REJECTED',
+                'table-warning': txn.status === 'PENDING'
+              }"
+              class="fw-medium">
+            <td><strong>{{ txn.userId }}</strong></td>
+            <td><strong>${{ txn.amount | number:'1.2-2' }}</strong></td>
+            <td>{{ txn.currency }}</td>
+            <td>{{ txn.merchant }}</td>
+            <td>{{ txn.location }}</td>
+            <td>
+              <span class="badge rounded-pill px-3 py-2 fs-6"
+                    [ngClass]="{
+                      'bg-success': txn.status === 'APPROVED',
+                      'bg-danger': txn.status === 'REJECTED',
+                      'bg-warning text-dark': txn.status === 'PENDING'
+                    }">
+                {{ txn.status }}
+              </span>
+            </td>
+            <td>
+              <button 
+                (click)="openChat(txn)" 
+                class="btn btn-sm btn-primary"
+                title="Chat with {{ txn.userId }}">
+                💬 Chat
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="recentTransactions.length === 0">
+            <td colspan="7" class="text-center py-5">
+              <div class="text-muted">
+                <i class="fas fa-inbox fa-4x mb-4 opacity-75"></i>
+                <h4>No transactions yet</h4>
+                <p class="mb-0">Submit a transaction from the Home page to see live updates in action!</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Chat Modal -->
+<app-chat-modal 
+  *ngIf="showChatModal && selectedTransaction"
+  [transaction]="selectedTransaction"
+  (close)="closeChat()">
+</app-chat-modal>

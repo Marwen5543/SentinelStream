@@ -1,0 +1,123 @@
+<div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">💳 Create New Transaction</h4>
+      </div>
+      <div class="card-body">
+        
+        <!-- Success/Error Messages -->
+        <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #transactionForm="ngForm">
+          <div class="row">
+            
+            <!-- User ID -->
+            <div class="col-md-6 mb-3">
+              <label for="userId" class="form-label">User ID *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="userId" 
+                name="userId"
+                [(ngModel)]="transaction.userId" 
+                required
+                placeholder="Enter user ID">
+            </div>
+
+            <!-- Amount -->
+            <div class="col-md-6 mb-3">
+              <label for="amount" class="form-label">Amount *</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="amount" 
+                  name="amount"
+                  [(ngModel)]="transaction.amount" 
+                  required
+                  min="0.01"
+                  step="0.01"
+                  placeholder="0.00">
+              </div>
+            </div>
+
+            <!-- Currency -->
+            <div class="col-md-6 mb-3">
+              <label for="currency" class="form-label">Currency *</label>
+              <select 
+                class="form-select" 
+                id="currency" 
+                name="currency"
+                [(ngModel)]="transaction.currency" 
+                required>
+                <option value="USD">USD - US Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="TND">TND - Tunisian Dinar</option>
+                <option value="JPY">JPY - Japanese Yen</option>
+              </select>
+            </div>
+
+            <!-- Merchant -->
+            <div class="col-md-6 mb-3">
+              <label for="merchant" class="form-label">Merchant *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="merchant" 
+                name="merchant"
+                [(ngModel)]="transaction.merchant" 
+                required
+                placeholder="e.g., Amazon Books">
+            </div>
+
+            <!-- Location -->
+            <div class="col-md-12 mb-3">
+              <label for="location" class="form-label">Location *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="location" 
+                name="location"
+                [(ngModel)]="transaction.location" 
+                required
+                placeholder="e.g., Tunis, New York">
+            </div>
+
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-2">
+            <button 
+              type="submit" 
+              class="btn btn-primary"
+              [disabled]="isSubmitting || !transactionForm.valid">
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+              {{ isSubmitting ? 'Processing...' : 'Submit Transaction' }}
+            </button>
+            
+            <button 
+              type="button" 
+              class="btn btn-secondary"
+              (click)="fillSampleData()"
+              [disabled]="isSubmitting">
+              🎲 Fill Sample Data
+            </button>
+            
+            <button 
+              type="button" 
+              class="btn btn-outline-secondary"
+              (click)="resetForm()"
+              [disabled]="isSubmitting">
+              Clear
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
