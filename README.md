@@ -1,114 +1,105 @@
-SentinelStream
+# SentinelStream  
+**Real-Time AI-Driven Transaction Monitoring System**
 
-Real-Time AI-Driven Transaction Monitoring System
+> A cloud-native, event-driven backend project demonstrating real-time stream processing, AI inference, and fault-tolerant system design using only free-tier technologies.
 
-A cloud-native, event-driven backend project demonstrating real-time stream processing, AI inference, and fault-tolerant microservice design using only free-tier technologies.
+---
 
-🚀 What This Project Shows
+## 🚀 What This Project Shows
 
-SentinelStream simulates a bank-grade transaction monitoring system where financial events are processed asynchronously and analyzed in real time using an AI model to detect suspicious behavior.
+SentinelStream simulates a **bank-grade transaction monitoring system** where financial events are processed asynchronously and analyzed in real time using an AI model to detect suspicious behavior.
 
-The project highlights how to:
+This project demonstrates how to:
+- Handle **high-throughput data streams**
+- Build **non-blocking, event-driven backends**
+- Integrate **AI inference** into production pipelines
+- Design **fault-tolerant architectures** with Kafka
 
-Handle high-throughput data streams
+---
 
-Build non-blocking, event-driven systems
+## 🧠 Core Idea
 
-Integrate AI inference into backend pipelines
+Instead of synchronously querying a database for every transaction, SentinelStream processes transactions as a **stream**:
 
-Design fault-tolerant architectures with Kafka
+1. A transaction is received via a REST API  
+2. The event is published to Kafka  
+3. A background consumer analyzes it using an AI model  
+4. The result is persisted and flagged if suspicious  
 
-🧠 Core Idea
+This ensures **low latency**, **scalability**, and **system resilience**.
 
-Instead of synchronously checking every transaction against a database (slow and unscalable), SentinelStream processes transactions as a stream:
+---
 
-A transaction is received via REST
+## 🏗️ Architecture Overview
 
-The event is published to Kafka
-
-A background consumer analyzes it using AI
-
-Results are persisted and flagged automatically
-
-🏗️ Architecture Overview
 Client
-  ↓
+↓
 Spring Boot REST API (Producer)
-  ↓
+↓
 Kafka (Upstash)
-  ↓
+↓
 Spring Boot Consumer
-  ↓
+↓
 AI Inference (Hugging Face)
-  ↓
+↓
 PostgreSQL (Neon)
 
-🧰 Tech Stack (100% Free Tier)
+yaml
+Copier le code
 
-Java 21 / Spring Boot 3
+---
 
-Apache Kafka (Upstash – Serverless)
+## 🧰 Tech Stack (100% Free Tier)
 
-Hugging Face Inference API
+- **Java 21 / Spring Boot 3**
+- **Apache Kafka (Upstash – Serverless)**
+- **Hugging Face Inference API**
+- **PostgreSQL (Neon.tech)**
+- **Docker**
+- **Azure App Service (Free Tier)**
 
-PostgreSQL (Neon.tech)
+---
 
-Docker
+## ⚙️ Key Components
 
-Azure App Service (Free Tier)
+### Transaction Producer
+- REST API accepting transaction events
+- Publishes messages to Kafka
+- Immediate response for non-blocking ingestion
 
-⚙️ Key Components
-Transaction Producer
+### Kafka Event Stream
+- Durable message queue
+- Decouples producers from consumers
+- Guarantees fault tolerance
 
-REST API accepting transaction events
+### AI-Powered Consumer
+- Listens to Kafka topics
+- Sends transaction context to an AI model
+- Classifies transactions as **suspicious** or **normal**
 
-Publishes messages to Kafka
+### Persistence Layer
+- Stores cleared transactions
+- Flags suspicious activity for further analysis
 
-Immediate response → non-blocking design
+---
 
-Kafka Event Stream
+## 🔐 Key Skills Demonstrated
 
-Durable message queue
+- Event-driven architecture
+- Stream processing with Kafka
+- Asynchronous backend design
+- AI integration via REST APIs
+- Cloud-native development
+- Cost-aware system design (free-tier constraints)
 
-Decouples ingestion from processing
+---
 
-Ensures fault tolerance
+## ▶️ Running the Project
 
-AI-Powered Consumer
-
-Listens to Kafka topic
-
-Sends transaction context to an AI model
-
-Classifies transactions as suspicious or normal
-
-Persistence Layer
-
-Stores cleared transactions
-
-Flags suspicious activity for further analysis
-
-🔐 Key Skills Demonstrated
-
-Event-driven architecture
-
-Stream processing with Kafka
-
-Asynchronous backend design
-
-AI integration via REST APIs
-
-Cloud-native development
-
-Free-tier system design (cost-aware engineering)
-
-▶️ Running the Project
+```bash
 docker build -t sentinelstream .
 docker run -p 8080:8080 sentinelstream
-
-
 Requirements
-
 Java 21
 
 Docker
@@ -120,8 +111,7 @@ Hugging Face API token
 Neon PostgreSQL credentials
 
 📈 Possible Extensions
-
-Real fraud datasets & fine-tuned models
+Fine-tuned fraud detection models
 
 Prometheus & Grafana monitoring
 
@@ -129,8 +119,7 @@ Dead-letter queues
 
 OAuth2 / JWT security
 
-Horizontal consumer scaling
+Horizontal scaling of consumers
 
 👤 About This Project
-
 SentinelStream is a portfolio project designed to demonstrate modern backend engineering, combining distributed systems, AI inference, and cloud-native architecture using production-grade tools.
